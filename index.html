@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Laddu!</title>
+    <style>
+        /* Basic Setup & Background Gradient */
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Card Styling */
+        .card {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            text-align: center;
+            max-width: 380px;
+            width: 90%;
+            transform: scale(0.95);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            backdrop-filter: blur(10px);
+            z-index: 10;
+        }
+
+        /* Pop Animation Class on Click */
+        .card.active {
+            transform: scale(1);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            color: #ff4757;
+            font-size: 2.2em;
+            margin-bottom: 10px;
+            margin-top: 10px;
+        }
+
+        p {
+            color: #57606f;
+            font-size: 1.1em;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        /* Photo Styling */
+        .photo-container {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 20px auto;
+            border-radius: 50%;
+            border: 5px solid white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            overflow: hidden;
+            opacity: 0;
+            transform: scale(0) rotate(-180deg);
+            transition: all 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: none;
+        }
+
+        .photo-container.reveal {
+            display: block;
+            opacity: 1;
+            transform: scale(1) rotate(0deg);
+            margin-top: 10px;
+        }
+
+        .photo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Button Styling */
+        .btn {
+            background: #ff4757;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2em;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s, transform 0.2s;
+            box-shadow: 0 5px 15px rgba(255, 71, 87, 0.4);
+        }
+
+        .btn:hover {
+            background: #ff6b81;
+            transform: translateY(-3px);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="bdayAudio" src="song.mp3"></audio>
+    <div class="card" id="bdayCard">
+        <h1 id="title">Surprise Laddu! 🎁</h1>
+        
+        <div class="photo-container" id="photoWrapper">
+            <img src="laddu.jpg" alt="Birthday Person">
+        </div>
+
+        <p id="message">Tumhare liye ek special message hai...</p>
+        
+        <button class="btn" id="wishBtn">Open It!</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
+    <script>
+        document.getElementById('wishBtn').addEventListener('click', function() {
+            
+            // --- Play the Audio ---
+            document.getElementById('bdayAudio').play();
+            // ----------------------
+
+            // Confetti Animation Logic
+            var duration = 3000;
+            var end = Date.now() + duration;
+
+            (function frame() {
+                confetti({
+                    particleCount: 7,
+                    angle: 60,
+                    spread: 55,
+                    origin: { x: 0 },
+                    colors: ['#ff4757', '#2ed573', '#1e90ff', '#ffa502', '#ffffff']
+                });
+                confetti({
+                    particleCount: 7,
+                    angle: 120,
+                    spread: 55,
+                    origin: { x: 1 },
+                    colors: ['#ff4757', '#2ed573', '#1e90ff', '#ffa502', '#ffffff']
+                });
+
+                if (Date.now() < end) {
+                    requestAnimationFrame(frame);
+                }
+            }());
+
+            // Reveal Photo
+            const photo = document.getElementById('photoWrapper');
+            photo.classList.add('reveal'); 
+
+            // Change Text Details
+            document.getElementById('title').innerText = "Happy Birthday Laddu! 🎂🥳";
+            document.getElementById('message').innerHTML = "Dher saari khushiyan aur pyaar!<br>Hamesha aise hi muskurate raho. Have an amazing day!";
+            
+            // Hide the button and update card state
+            this.classList.add('hidden');
+            document.getElementById('bdayCard').classList.add('active');
+        });
+    </script>
+</body>
+</html>
